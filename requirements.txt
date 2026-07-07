@@ -1,0 +1,12 @@
+# Core numerical / ML stack for the multiview descriptor
+numpy>=1.24
+scipy>=1.10
+scikit-learn>=1.3
+statsmodels>=0.14
+networkx>=3.0
+matplotlib>=3.7
+
+# Deep learning (only needed to (re)train / (re)extract the zoo:
+# phase16_reextract.py, phase12_cifar100.py, phase13_svhn.py)
+torch>=2.0
+torchvision>=0.15

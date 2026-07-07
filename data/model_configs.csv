@@ -1,0 +1,40 @@
+family,arch_type,config,params,accuracy
+A_Shallow,MLP,"{'fam': 'A_Shallow', 'cls': 'sha', 'hidden': [128], 'dropout': 0.5, 'lr': 0.005, 'epochs': 5}",394634,49.55
+A_Shallow,MLP,"{'fam': 'A_Shallow', 'cls': 'sha', 'hidden': [256], 'dropout': 0.4, 'lr': 0.001, 'epochs': 8}",789258,53.89
+A_Shallow,MLP,"{'fam': 'A_Shallow', 'cls': 'sha', 'hidden': [512], 'dropout': 0.3, 'lr': 0.0005, 'epochs': 10}",1578506,54.93
+A_Shallow,MLP,"{'fam': 'A_Shallow', 'cls': 'sha', 'hidden': [256, 128], 'dropout': 0.5, 'lr': 0.002, 'epochs': 8}",820874,48.48
+A_Shallow,MLP,"{'fam': 'A_Shallow', 'cls': 'sha', 'hidden': [512, 256], 'dropout': 0.2, 'lr': 0.0005, 'epochs': 15}",1707274,57.5
+A_Shallow,MLP,"{'fam': 'A_Shallow', 'cls': 'sha', 'hidden': [1024, 512], 'dropout': 0.4, 'lr': 0.001, 'epochs': 12}",3676682,56.28
+A_Shallow,MLP,"{'fam': 'A_Shallow', 'cls': 'sha', 'hidden': [512, 256, 128], 'dropout': 0.1, 'lr': 0.0003, 'epochs': 20}",1738890,57.07
+A_Shallow,MLP,"{'fam': 'A_Shallow', 'cls': 'sha', 'hidden': [1024, 512, 256], 'dropout': 0.3, 'lr': 0.0008, 'epochs': 15}",3805450,57.51
+A_Shallow,MLP,"{'fam': 'A_Shallow', 'cls': 'sha', 'hidden': [2048, 1024], 'dropout': 0.5, 'lr': 0.002, 'epochs': 10}",8401930,51.28
+A_Shallow,MLP,"{'fam': 'A_Shallow', 'cls': 'sha', 'hidden': [1024, 1024, 512], 'dropout': 0.2, 'lr': 0.0001, 'epochs': 25}",4726282,57.65
+B_Deep,MLP,"{'fam': 'B_Deep', 'cls': 'dep', 'hidden': [256, 128, 64], 'dropout': 0.6, 'lr': 0.005, 'epochs': 6}",829386,48.75
+B_Deep,MLP,"{'fam': 'B_Deep', 'cls': 'dep', 'hidden': [512, 256, 128], 'dropout': 0.4, 'lr': 0.001, 'epochs': 10}",1740682,56.07
+B_Deep,MLP,"{'fam': 'B_Deep', 'cls': 'dep', 'hidden': [512, 256, 128, 64], 'dropout': 0.5, 'lr': 0.002, 'epochs': 12}",1748426,54.02
+B_Deep,MLP,"{'fam': 'B_Deep', 'cls': 'dep', 'hidden': [1024, 512, 256, 128], 'dropout': 0.3, 'lr': 0.0005, 'epochs': 15}",3840906,59.16
+B_Deep,MLP,"{'fam': 'B_Deep', 'cls': 'dep', 'hidden': [1024, 512, 256, 128, 64], 'dropout': 0.2, 'lr': 0.0003, 'epochs': 18}",3848650,59.57
+B_Deep,MLP,"{'fam': 'B_Deep', 'cls': 'dep', 'hidden': [2048, 1024, 512, 256], 'dropout': 0.4, 'lr': 0.001, 'epochs': 12}",9058058,58.61
+B_Deep,MLP,"{'fam': 'B_Deep', 'cls': 'dep', 'hidden': [2048, 1024, 512, 256, 128], 'dropout': 0.5, 'lr': 0.0005, 'epochs': 15}",9089930,56.98
+B_Deep,MLP,"{'fam': 'B_Deep', 'cls': 'dep', 'hidden': [1024, 1024, 512, 256, 128], 'dropout': 0.1, 'lr': 0.0001, 'epochs': 25}",4892554,59.45
+B_Deep,MLP,"{'fam': 'B_Deep', 'cls': 'dep', 'hidden': [4096, 2048, 1024, 512], 'dropout': 0.6, 'lr': 0.002, 'epochs': 10}",23621130,56.84
+B_Deep,MLP,"{'fam': 'B_Deep', 'cls': 'dep', 'hidden': [2048, 2048, 1024, 512, 256], 'dropout': 0.3, 'lr': 0.0004, 'epochs': 20}",13258506,60.0
+C_Residual,MLP,"{'fam': 'C_Residual', 'cls': 'res', 'hidden_dim': 128, 'n_blocks': 2, 'dropout': 0.5, 'lr': 0.005, 'epochs': 8}",461706,54.35
+C_Residual,MLP,"{'fam': 'C_Residual', 'cls': 'res', 'hidden_dim': 256, 'n_blocks': 3, 'dropout': 0.4, 'lr': 0.001, 'epochs': 12}",1187082,57.39
+C_Residual,MLP,"{'fam': 'C_Residual', 'cls': 'res', 'hidden_dim': 512, 'n_blocks': 2, 'dropout': 0.3, 'lr': 0.0005, 'epochs': 15}",2633226,58.34
+C_Residual,MLP,"{'fam': 'C_Residual', 'cls': 'res', 'hidden_dim': 512, 'n_blocks': 4, 'dropout': 0.5, 'lr': 0.002, 'epochs': 10}",3687946,57.7
+C_Residual,MLP,"{'fam': 'C_Residual', 'cls': 'res', 'hidden_dim': 512, 'n_blocks': 6, 'dropout': 0.2, 'lr': 0.0001, 'epochs': 25}",4742666,57.31
+C_Residual,MLP,"{'fam': 'C_Residual', 'cls': 'res', 'hidden_dim': 1024, 'n_blocks': 3, 'dropout': 0.4, 'lr': 0.0008, 'epochs': 15}",9466890,57.42
+C_Residual,MLP,"{'fam': 'C_Residual', 'cls': 'res', 'hidden_dim': 1024, 'n_blocks': 5, 'dropout': 0.6, 'lr': 0.003, 'epochs': 12}",13673482,57.4
+C_Residual,MLP,"{'fam': 'C_Residual', 'cls': 'res', 'hidden_dim': 1024, 'n_blocks': 8, 'dropout': 0.3, 'lr': 0.0003, 'epochs': 20}",19983370,58.52
+C_Residual,MLP,"{'fam': 'C_Residual', 'cls': 'res', 'hidden_dim': 2048, 'n_blocks': 4, 'dropout': 0.5, 'lr': 0.001, 'epochs': 15}",39917578,57.98
+C_Residual,MLP,"{'fam': 'C_Residual', 'cls': 'res', 'hidden_dim': 2048, 'n_blocks': 6, 'dropout': 0.2, 'lr': 0.0002, 'epochs': 20}",56719370,60.0
+D_CNNsmall,CNN,"{'fam': 'D_CNNsmall', 'type': 'small', 'channels': [32, 64], 'fc': [256], 'dropout': 0.3, 'lr': 0.001, 'epochs': 15}",1070986,73.97
+D_CNNsmall,CNN,"{'fam': 'D_CNNsmall', 'type': 'small', 'channels': [32, 64, 128], 'fc': [256], 'dropout': 0.3, 'lr': 0.0005, 'epochs': 18}",620810,75.89
+D_CNNsmall,CNN,"{'fam': 'D_CNNsmall', 'type': 'small', 'channels': [64, 128], 'fc': [512, 256], 'dropout': 0.4, 'lr': 0.001, 'epochs': 15}",4404746,75.43
+D_CNNsmall,CNN,"{'fam': 'D_CNNsmall', 'type': 'small', 'channels': [64, 128, 256], 'fc': [512], 'dropout': 0.3, 'lr': 0.0005, 'epochs': 20}",2474506,80.97
+D_CNNsmall,CNN,"{'fam': 'D_CNNsmall', 'type': 'small', 'channels': [64, 128, 256], 'fc': [512, 256], 'dropout': 0.4, 'lr': 0.0003, 'epochs': 22}",2603274,78.94
+E_CNNres,CNN,"{'fam': 'E_CNNres', 'type': 'resnet', 'channels': [32, 64, 128], 'n_blocks': 1, 'dropout': 0.2, 'lr': 0.001, 'epochs': 20}",464170,83.77
+E_CNNres,CNN,"{'fam': 'E_CNNres', 'type': 'resnet', 'channels': [32, 64, 128], 'n_blocks': 2, 'dropout': 0.2, 'lr': 0.0005, 'epochs': 25}",833578,82.44
+E_CNNres,CNN,"{'fam': 'E_CNNres', 'type': 'resnet', 'channels': [64, 128, 256], 'n_blocks': 2, 'dropout': 0.2, 'lr': 0.0003, 'epochs': 25}",3326026,84.97
+E_CNNres,CNN,"{'fam': 'E_CNNres', 'type': 'resnet', 'channels': [64, 128, 256], 'n_blocks': 3, 'dropout': 0.3, 'lr': 0.0002, 'epochs': 30}",4802122,83.16
