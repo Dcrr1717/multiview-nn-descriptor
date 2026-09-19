@@ -1,0 +1,37 @@
+n=40  familias=[np.str_('A_Shallow'), np.str_('B_Deep'), np.str_('C_Residual'), np.str_('D_CNNsmall'), np.str_('E_CNNres')]
+
+[A] SENSIBILIDAD (Family AUC de X3, CIFAR-10)
+  referencia (theta=0.4, Pearson, cap80, N=50, r=15): 0.862
+    theta=0.2      -> 0.871
+    theta=0.3      -> 0.871
+    theta=0.4      -> 0.862
+    theta=0.5      -> 0.841
+    theta=0.6      -> 0.856
+    >> rango theta: [0.841, 0.871]  (amplitud 0.030)
+    corr=Pearson  -> 0.862
+    corr=Spearman -> 0.832
+    >> rango corr: [0.832, 0.862]  (amplitud 0.030)
+    cap=40       -> 0.812
+    cap=80       -> 0.862
+    cap=200      -> 0.871
+    >> rango cap: [0.812, 0.871]  (amplitud 0.059)
+    N=50       -> 0.862
+    N=100      -> 0.862
+    N=200      -> 0.862
+    >> rango N: [0.862, 0.862]  (amplitud 0.000)
+    r=8        -> 0.862
+    r=12       -> 0.862
+    r=15       -> 0.862
+    >> rango r: [0.862, 0.862]  (amplitud 0.000)
+  --- elección de capa (redes con >=3 capas) ---
+    capa 0 (relu_1): 0.891  (n=29)
+    capa 1 (relu_4): 0.869  (n=29)
+    capa 2 (relu_7): 0.819  (n=29)
+
+[B] BASELINE CKA (similitud representacional lineal) -> Family AUC
+  CKA (kernel SVM) Family AUC: 0.991
+
+[C] NEURAL PERSISTENCE (pesos) -> Family AUC
+  Neural Persistence Family AUC: 0.907
+
+  (referencia X3 = 0.862)

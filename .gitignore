@@ -23,6 +23,10 @@ outputs/**/progress.json
 outputs/fase12_cifar100/
 outputs/fase13_svhn/
 outputs/**/summary_*.json
+# ...except the three per-domain summaries that SUPLEMENTO.pdf is built from
+!outputs/fase11_results/summary_leakfree.json
+!outputs/fase12_results/summary_leakfree.json
+!outputs/fase13_results/summary_leakfree.json
 
 # OS / editors
 .DS_Store
