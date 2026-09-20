@@ -222,6 +222,31 @@ El umbral $\theta{=}0{,}4$, el tipo de correlación, el tope de 80 neuronas, el 
 
 """ + SWEEP + r"""
 
+\section{Comprobaciones de robustez}
+\label{sec:robustez}
+
+El artículo resume cuatro comprobaciones adicionales sobre el repertorio de CIFAR-10; sus valores exactos, obtenidos con \texttt{phase15\_reviewer.py} (registro en \texttt{supplement/phase15\_robustez.log}), son los siguientes. Primera, estabilidad de la ponderación: la correlación de Spearman entre los pesos $w^{(v)}$ ajustados con toda la muestra y los ajustados dentro de cada pliegue fue, en promedio, de 0,970 en CIFAR-10, 0,956 en CIFAR-100 y 0,934 en SVHN. Segunda, aporte de las dos proyecciones Ridge: la variante adaptativa alcanzó un AUC familiar de 0,947 [0,91; 0,98] con ellas (24 dimensiones) y de 0,943 [0,90; 0,97] sin ellas (22 dimensiones), un aporte de $+0{,}004$. Tercera, AUC uno contra el resto por familia para $X_3^{(\mathrm{c})}$: A (ReLU) 0,944; B (BatchNorm y GELU) 0,890; C (residual) 0,963; D (CNN pequeña) 0,999; E (CNN residual) 1,000. Cuarta, línea base de metadatos enriquecida (número de parámetros, su logaritmo, profundidad y anchura): 0,854 [0,81; 0,89] frente a 0,949 [0,92; 0,97] de $X_3^{(\mathrm{c})}$, una ventaja de $+0{,}095$. Además, los pesos aprendidos en distintos dominios no se parecen entre sí (Spearman de $-0{,}04$ a $0{,}40$ entre pares de dominios), lo que refuerza la elección de la variante de control sin ponderación para los resultados principales.
+
+\section{Figuras complementarias}
+\label{sec:figuras}
+
+Las cuatro figuras siguientes acompañaban a versiones anteriores del artículo y se remiten aquí por el límite de extensión de la revista; sus cifras aparecen en el texto del artículo.
+
+\begin{figure}[H]\centering
+\includegraphics[width=0.55\linewidth]{fig4_violins_es.pdf}
+\caption{AUC familiar en los cinco pliegues de validación cruzada (CIFAR-10). Cada punto es un pliegue, los violines son densidades de núcleo y las barras marcan las medianas; el contraste de Wilcoxon unilateral sobre los cinco pliegues pareados arrojó $p{=}0{,}031$ para $X_3^{(c)}$ frente a $X_1$ (\textasteriskcentered) y $p{=}0{,}062$ frente a $X_2$ (n.\,s.).}
+\end{figure}
+
+\begin{figure}[H]\centering
+\includegraphics[width=0.95\linewidth]{fig_correccion_benjamini_hochberg.pdf}
+\caption{Valores $p$ de la batería de diez pruebas por dominio frente al umbral escalonado de Benjamini--Hochberg ($q\,k/m$, $q{=}0{,}05$) y a la cota de Bonferroni ($\alpha/m{=}0{,}005$): 29 de las 30 pruebas superan la corrección y 28 resisten Bonferroni.}
+\end{figure}
+
+\begin{figure}[H]\centering
+\includegraphics[width=0.95\linewidth]{forest_tamanos_efecto.pdf}
+\caption{Tamaños de efecto por descriptor y dominio entre los cuartos extremos de exactitud: $d$ de Cohen con IC 95\,\% bootstrap (izquierda) y $|r|$ de Mann--Whitney (derecha); el relleno marca los contrastes significativos tras Benjamini--Hochberg. $X_3^{(r)}$ es la variante adaptativa con ponderación por rangos (Spearman al cuadrado), que solo interviene en la batería.}
+\end{figure}
+
 \section{Tablas completas por dominio}
 \label{sec:tablas}
 

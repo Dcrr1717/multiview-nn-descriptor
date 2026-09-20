@@ -44,7 +44,11 @@ defers to this repository because of the journal's page limit:
    examples, PCA rank and layer (log in
    `outputs/fase16_cifar10_raw/run_phase17_v2.log`, produced by
    `phase17_experiments.py`);
-4. the **complete result tables per domain and per analysis context**
+4. the **robustness checks** (fold-weight stability, Ridge-projection contribution,
+   per-family AUC, enriched metadata baseline; log in `supplement/phase15_robustez.log`)
+   and the four **complementary figures** (fold violins, Benjamini–Hochberg,
+   effect-size forest, overlap heat map);
+5. the **complete result tables per domain and per analysis context**
    (full population, MLP-only, CNN-only, type-normalised accuracy; source
    JSONs in `outputs/fase1{1,2,3}_results/summary_leakfree.json`).
 

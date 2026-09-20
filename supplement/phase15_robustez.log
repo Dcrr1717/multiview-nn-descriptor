@@ -1,0 +1,26 @@
+======================================================================
+[1] ESTABILIDAD DE LOS PESOS Pearson^2
+  CIFAR-10 : Spearman(peso_full, peso_fold) medio = 0.970
+  CIFAR-100: Spearman(peso_full, peso_fold) medio = 0.956
+  SVHN     : Spearman(peso_full, peso_fold) medio = 0.934
+  --- entre datasets ---
+  CIFAR-10 vs CIFAR-100: Spearman = -0.044
+  CIFAR-10 vs SVHN: Spearman = 0.396
+  CIFAR-100 vs SVHN: Spearman = -0.111
+======================================================================
+[2] APORTE DE LAS 2 PROYECCIONES RIDGE (Family AUC, CIFAR-10, leak-free)
+  X3 con proyecciones (24-d): 0.947 [0.909,0.980]
+  X3 sin proyecciones (22-d): 0.943 [0.896,0.972]
+  aporte de las proyecciones = +0.004
+======================================================================
+[3] AUC UNO-CONTRA-RESTO POR FAMILIA (X3_orig, CIFAR-10, leak-free)
+  A_Shallow   : OvR AUC = 0.944
+  B_Deep      : OvR AUC = 0.890
+  C_Residual  : OvR AUC = 0.963
+  D_CNNsmall  : OvR AUC = 0.999
+  E_CNNres    : OvR AUC = 1.000
+======================================================================
+[4] LÍNEA BASE DE METADATOS ENRIQUECIDA (Family AUC, CIFAR-10)
+  metadatos [params, log-params, profundidad, ancho]: 0.854 [0.808,0.889]
+  X3 (fusion):                                        0.949 [0.921,0.971]
+  ventaja de X3 sobre metadatos = +0.095
