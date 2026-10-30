@@ -181,7 +181,8 @@ def noise_curves(curves, path):
     plt.close(fig)
 
 
-def sensitivity(res, path, flow):
+def sensitivity(res, path, flow, ref=None):
+    """ref: optional {"primary": B_auc, "hard": B_auc} drawn as reference lines."""
     params = list(dict.fromkeys(r["param"] for r in res))
     fig, axes = plt.subplots(1, len(params), figsize=(1.6 * len(params) + 0.6, 2.4), sharey=True)
     for ax, p in zip(axes, params):
@@ -189,15 +190,22 @@ def sensitivity(res, path, flow):
         x = np.arange(len(rr))
         ax.plot(x, [r["X3_primary"] for r in rr], "-o", color=VIEW_COLORS["X3"], ms=4, lw=2,
                 label="X3 primary")
-        ax.plot(x, [r["X3_hard"] for r in rr], "--s", color=VIEW_COLORS["X3"], ms=4, lw=1.3,
-                mfc="white", label="X3 hard")
+        if "X3_hard" in rr[0]:
+            ax.plot(x, [r["X3_hard"] for r in rr], "--s", color=VIEW_COLORS["X3"], ms=4, lw=1.3,
+                    mfc="white", label="X3 hard")
         ax.set_xticks(x)
         ax.set_xticklabels([r["value"] for r in rr], rotation=30, ha="right")
+        if ref:
+            ax.axhline(ref["primary"], color=VIEW_COLORS["B"], lw=1.2, label="B primary")
+            if "hard" in ref:
+                ax.axhline(ref["hard"], color=VIEW_COLORS["B"], lw=1.2, ls="--", label="B hard")
         ax.set_title(p)
         ax.set_xlim(-0.5, len(rr) - 0.5)
     axes[0].set_ylabel("Repeated-CV AUC (20 repeats)")
-    axes[-1].legend(frameon=False, loc="lower right")
-    fig.suptitle(f"{_title(flow)}: sensitivity of X3 to descriptor choices (snapshot mode)", y=1.04)
+    h, l = axes[0].get_legend_handles_labels()
+    fig.legend(h, l, loc="lower center", ncol=len(l), frameon=False, bbox_to_anchor=(0.5, -0.22))
+    fig.suptitle(f"{_title(flow)}: sensitivity of X3 to descriptor choices (snapshot mode; "
+                 f"lines = baseline B, CV mean)", y=1.04)
     fig.savefig(path)
     fig.savefig(str(path).replace(".png", ".pdf"))
     plt.close(fig)

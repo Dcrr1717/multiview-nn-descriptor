@@ -79,7 +79,9 @@ def process(args):
         row = {"flow": flow, "param": meta["param"], "traj": meta["traj"],
                "traj_id": f"{meta['param']:g}_{meta['traj']}", "window": i,
                "regime": label_trajectory(meta, flow),
-               "regime_frozen_rule": label_trajectory(meta, flow, rule="frozen"), "lyap": meta["lyap"],
+               "regime_frozen_rule": label_trajectory(meta, flow, rule="frozen"),
+               "regime_steady_first": label_trajectory(meta, flow, rule="steady_first"),
+               "lyap": meta["lyap"],
                "lyap_sem": meta["lyap_sem"], "dist_ref": meta["dist_ref"],
                "glob_cv": meta["glob_cv"]}
         row.update({f"X1_{n}": v for n, v in zip(X1_NAMES, x1)})

@@ -65,7 +65,9 @@ def views(flow):
     regs = [r for r in ("laminar", "transitional", "turbulent") if r in set(df.regime)]
     fig, axes = plt.subplots(3, len(regs), figsize=(2.4 * len(regs), 7.0), squeeze=False)
     for j, reg in enumerate(regs):
-        row = df[df.regime == reg].iloc[0]
+        sub = df[df.regime == reg]
+        ps = sorted(sub.param.unique())
+        row = sub[sub.param == ps[len(ps) // 2]].iloc[0]       # a mid-band representative
         W = np.load(ROOT / "data" / "raw" / flow / f"p{row.param:g}_r{int(row.traj)}.npy", mmap_mode="r")
         f = normalize_window(np.asarray(W[int(row.window), 0], dtype=np.float64))
         ax = axes[0, j]

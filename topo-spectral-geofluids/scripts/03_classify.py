@@ -99,6 +99,9 @@ def main():
     ap.add_argument("--mode", choices=["snapshot", "window"], default="snapshot")
     ap.add_argument("--noise", type=float, default=0.0)
     ap.add_argument("--perm", type=int, default=None, help="override the number of permutations")
+    ap.add_argument("--label", default="regime",
+                    help="label column: regime (pre-registered, amended) | regime_frozen_rule | "
+                         "regime_steady_first (label-sensitivity analyses)")
     ap.add_argument("--features", default=None)
     ap.add_argument("--tag", default="")
     ap.add_argument("--quick", action="store_true")
@@ -110,6 +113,9 @@ def main():
     name = f"{a.flow}_{a.mode}" + (f"_noise{a.noise:g}" if a.noise else "")
     fpath = Path(a.features) if a.features else ROOT / "data" / f"features_{name}.csv"
     df = pd.read_csv(fpath)
+    if a.label != "regime":
+        df["regime"] = df[a.label]
+        name += "_" + a.label.replace("regime_", "label_")
     a.tag = a.tag or name
     out_dir = ROOT / "results" / a.tag
     out_dir.mkdir(parents=True, exist_ok=True)

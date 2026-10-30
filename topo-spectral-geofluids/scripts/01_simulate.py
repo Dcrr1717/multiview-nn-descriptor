@@ -13,7 +13,9 @@ Raw windows are stored as float32 in data/raw/<flow>/ (git-ignored,
 ~1 GB per flow); per-trajectory metadata in data/raw/<flow>/*.json.
 Resumable: finished trajectories are skipped.
 
-Usage:  python scripts/01_simulate.py kolmogorov|rb [--workers 4]
+Usage:  python scripts/01_simulate.py kolmogorov|rb [--workers 4] [--ascending]
+        (--ascending lets a second process work from the other end of the
+        task list; finished trajectories are skipped, results are deterministic)
 """
 import argparse
 import json
@@ -100,12 +102,13 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("flow", choices=list(FLOWS))
     ap.add_argument("--workers", type=int, default=4)
+    ap.add_argument("--ascending", action="store_true")
     a = ap.parse_args()
     c = FLOWS[a.flow]
     tasks = [(a.flow, p, r) for regime in c["design"] for p in c["design"][regime]
              for r in range(c["n_traj"])]
     # longest (most turbulent) runs first for better load balance
-    tasks = sorted(tasks, key=lambda t: -t[1])
+    tasks = sorted(tasks, key=lambda t: t[1] if a.ascending else -t[1])
     print(f"{a.flow}: {len(tasks)} trajectories", flush=True)
     with Pool(a.workers) as pool:
         for tag, msg in pool.imap_unordered(run, tasks):

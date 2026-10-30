@@ -178,6 +178,8 @@ def feature_tests(F, names, y, units, classes, pair=None):
             H, p = kruskal(*groups_)
         except ValueError:
             H, p = 0.0, 1.0
+        if not np.isfinite(p):          # constant feature (all ties): no evidence
+            H, p = 0.0, 1.0
         n, kk = len(ym), len(classes)
         rec = {"feature": nm, "kw_H": float(H), "kw_p": float(p),
                "eps2": float(max(0.0, (H - kk + 1) / (n - kk)))}
@@ -186,6 +188,8 @@ def feature_tests(F, names, y, units, classes, pair=None):
             try:
                 U, pm = mannwhitneyu(a, b, alternative="two-sided")
             except ValueError:
+                U, pm = len(a) * len(b) / 2, 1.0
+            if not np.isfinite(pm):
                 U, pm = len(a) * len(b) / 2, 1.0
             rec.update({"mw_p": float(pm), "rank_biserial": float(1 - 2 * U / (len(a) * len(b)))})
         out.append(rec)

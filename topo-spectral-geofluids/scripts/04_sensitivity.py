@@ -12,7 +12,7 @@ varied at a time; the other view is taken from the main feature file.
 Metric: repeated leave-parameter-out CV AUC of X3 (20 repeats) on the
 primary and hard endpoints (snapshot mode, clean data).
 
-Usage:  python scripts/04_sensitivity.py kolmogorov|rb
+Usage:  python scripts/04_sensitivity.py kolmogorov|rb [--plot-only]
 """
 import glob
 import json
@@ -59,8 +59,21 @@ def features(args):
     return out
 
 
+def baseline_ref(flow):
+    p = ROOT / "results" / f"{flow}_snapshot" / "metrics.json"
+    if not p.exists():
+        return None
+    m = json.load(open(p))
+    return {ep: m[ep]["views"]["B"]["auc_cv_mean"] for ep in ("primary", "hard") if ep in m}
+
+
 if __name__ == "__main__":
     flow = sys.argv[1] if len(sys.argv) > 1 else "kolmogorov"
+    if "--plot-only" in sys.argv:
+        out = ROOT / "results" / f"{flow}_snapshot"
+        plots.sensitivity(json.load(open(out / "sensitivity.json")), out / "fig_sensitivity.png", flow,
+                          baseline_ref(flow))
+        sys.exit(0)
     df = pd.read_csv(ROOT / "data" / f"features_{flow}_snapshot.csv")
     X1 = df[[c for c in df.columns if c.startswith("X1_")]].to_numpy(float)
     X2 = df[[c for c in df.columns if c.startswith("X2_")]].to_numpy(float)
@@ -69,6 +82,7 @@ if __name__ == "__main__":
     order = {t: i for i, t in enumerate(tags)}
     key = [f"p{p:g}_r{r}" for p, r in zip(df["param"], df["traj"])]
     classes = ["laminar", "transitional", "turbulent"]
+    design = [c for c in classes if c in FLOWS[flow]["design"]]
     res = []
     with Pool(4) as pool:
         for name, val, kw in VARIANTS:
@@ -78,8 +92,10 @@ if __name__ == "__main__":
             x2 = V if ("x2" in kw or "min_pers" in kw) else X2
             x3 = np.array([desc_x3(a, b) for a, b in zip(x1, x2)])
             rec = {"param": name, "value": str(val)}
-            for ep, mask in (("primary", np.ones(len(df), bool)),
-                             ("hard", df["regime"].isin(["transitional", "turbulent"]).to_numpy())):
+            eps = [("primary", df["regime"].isin(design).to_numpy())]
+            if df[df.regime == "transitional"]["param"].nunique() >= 2:
+                eps.append(("hard", df["regime"].isin(["transitional", "turbulent"]).to_numpy()))
+            for ep, mask in eps:
                 cl = [c for c in classes if c in set(df["regime"][mask])]
                 y = df["regime"][mask].map({c: i for i, c in enumerate(cl)}).to_numpy()
                 g = df["param"][mask].to_numpy()
@@ -87,10 +103,9 @@ if __name__ == "__main__":
                 rec[f"X3_{ep}"] = repeated_cv_auc(x3[mask], y, g, k=k, repeats=20)[0]
                 rec[f"view_{ep}"] = repeated_cv_auc(V[mask], y, g, k=k, repeats=20)[0]
             res.append(rec)
-            print(f"  {name:9s} {str(val):9s} X3 primary {rec['X3_primary']:.3f} hard {rec['X3_hard']:.3f}"
-                  f"  | varied view primary {rec['view_primary']:.3f} hard {rec['view_hard']:.3f}",
-                  flush=True)
+            print(f"  {name:9s} {str(val):9s} " + "  ".join(f"{k} {v:.3f}" for k, v in rec.items()
+                                                           if k not in ("param", "value")), flush=True)
     out = ROOT / "results" / f"{flow}_snapshot"
     out.mkdir(parents=True, exist_ok=True)
     json.dump(res, open(out / "sensitivity.json", "w"), indent=1)
-    plots.sensitivity(res, out / "fig_sensitivity.png", flow)
+    plots.sensitivity(res, out / "fig_sensitivity.png", flow, baseline_ref(flow))

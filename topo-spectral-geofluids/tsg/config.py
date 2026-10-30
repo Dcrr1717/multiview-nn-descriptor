@@ -68,8 +68,12 @@ def label_trajectory(meta, flow, rule="amended"):
     """Descriptor-free regime label of one trajectory.
 
     turbulent    : chaotic, largest Lyapunov exponent lambda_1 > 0.01
-                   (point estimate; Amendment 2). rule="frozen" applies the
-                   original lambda_1 - 2 SEM > 0 (reported as a sensitivity);
+                   (point estimate; Amendment 2). Sensitivity variants:
+                   rule="frozen" applies the original lambda_1 - 2 SEM > 0;
+                   rule="steady_first" labels a trajectory that is steady over
+                   the sampling period (CV of the global observable < 1e-3)
+                   as non-turbulent whatever lambda_1 (weakly unstable steady
+                   states, e.g. RB rolls at Ra = 4e5 before they burst);
     laminar      : Kolmogorov - converged to the laminar fixed point
                    (relative distance < 1e-3);
                    RB - steady convection (CV of Nu over the sampling
@@ -77,8 +81,10 @@ def label_trajectory(meta, flow, rule="amended"):
     transitional : everything else (non-laminar coherent states: steady,
                    travelling, periodic or quasi-periodic).
     """
-    chaotic = (meta["lyap"] > LYAP_CHAOS if rule == "amended"
-               else meta["lyap"] - 2 * meta["lyap_sem"] > 0)
+    chaotic = (meta["lyap"] - 2 * meta["lyap_sem"] > 0 if rule == "frozen"
+               else meta["lyap"] > LYAP_CHAOS)
+    if rule == "steady_first" and meta["glob_cv"] < 1e-3:
+        chaotic = False
     if chaotic:
         return "turbulent"
     if flow == "kolmogorov" and meta["dist_ref"] < 1e-3:
