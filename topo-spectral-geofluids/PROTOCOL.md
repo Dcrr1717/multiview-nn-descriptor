@@ -1,6 +1,7 @@
 # Pre-registered protocol — Go/No-Go checkpoint
 
-**Status: FROZEN.** This file, `tsg/decision.py` and `tsg/config.py` were
+**Status: FROZEN** (amendments, all made before any descriptor was computed,
+are listed in §13). This file, `tsg/decision.py` and `tsg/config.py` were
 committed *before* any descriptor, baseline or classifier was computed on the
 experimental data (see the git history: the protocol commit precedes the
 commit that adds `data/features_*.csv` and `results/<flow>_*`). The only
@@ -240,3 +241,16 @@ analysis was therefore moved to **single snapshots** with purely spatial views
 and a purely spatial baseline; the window analysis is kept as secondary. This
 change used only the pilot dynamics, never descriptor or classifier output.
 
+
+## 13. Amendments after freezing (all before any descriptor was computed)
+
+**Amendment 1 — RB Lyapunov window 100 → 300 time units** (data generation of
+both flows restarted at commit 40834b6 after an integrator fix; this amendment
+restarts RB only). The RB turbulent state is intermittent (long quiescent shear
+phases between bursts), so the block SEM of a 100-unit twin-trajectory estimate
+is too large to resolve λ₁ > 0: the pilot gives λ₁ = 0.065 ± 0.044 at Ra = 4·10⁵,
+and the first RB data trajectory (Ra = 10⁶) gave 0.067 ± 0.034. Under the
+frozen rule (λ₁ − 2·SEM > 0) these chaotic trajectories would be labelled
+*transitional* and excluded. The criterion is unchanged; only the estimation
+window grows, which shrinks the SEM by ≈ √3. Only dynamical diagnostics of one
+trajectory were seen; no descriptor, baseline or classifier output existed.

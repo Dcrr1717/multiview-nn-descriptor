@@ -47,6 +47,9 @@ FLOWS = {
         # no time-periodic window -> two regimes (PROTOCOL.md 2.1)
         "design": {"laminar": [5e4, 1e5, 2e5, 3e5],
                    "turbulent": [4e5, 5e5, 7e5, 1e6]},
+        # Amendment 1 (PROTOCOL.md 13): the intermittent bursting state needs a
+        # longer twin-trajectory window to resolve lambda_1 > 0 (block SEM)
+        "t_lyap": 300.0,
         "periodic": (False, True),  # (z, x): walls in z, periodic in x
         "spec_kind": "rb_scalar",
         "slope_band": (2, 30),
