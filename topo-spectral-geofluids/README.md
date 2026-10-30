@@ -21,7 +21,11 @@ Springer *GEM — International Journal on Geomathematics* topical collection
 
 This folder is self-contained and meant to become its own repository
 (`topo-spectral-geofluids`). To extract it with its history:
-`git subtree split --prefix topo-spectral-geofluids -b topo-spectral-geofluids`.
+`git subtree split --prefix topo-spectral-geofluids -b topo-spectral-geofluids`,
+then push that branch to the new repository. Commit hashes cited in
+`PROTOCOL.md` / `REPORT.md` (e.g. the protocol freeze `b6718d4`) refer to the
+history in `Dcrr1717/multiview-nn-descriptor`. After the split the same
+commits keep their messages and order but get new hashes.
 
 ## What is in here
 
