@@ -57,8 +57,8 @@ design: it is excluded from the analysis and listed in `metrics.json`.
 ### 2.2 Labels (descriptor-free)
 
 Each trajectory is labelled from its own dynamics (`tsg.config.label_trajectory`):
-**turbulent** if the largest Lyapunov exponent (twin trajectory, 100 time units)
-satisfies λ₁ − 2·SEM > 0; otherwise **laminar** if Kolmogorov: relative distance
+**turbulent** if the largest Lyapunov exponent (twin trajectory, 100 time units;
+300 for RB) satisfies λ₁ − 2·SEM > 0 [*amended* to λ̂₁ > 0.01, see §13]; otherwise **laminar** if Kolmogorov: relative distance
 to the laminar state < 10⁻³ / RB: CV of Nu over the sampling period < 10⁻³;
 otherwise **transitional**. If a trajectory's dynamical label differs from its
 band (multistability), the dynamical label is used and the count is reported.
@@ -254,3 +254,17 @@ frozen rule (λ₁ − 2·SEM > 0) these chaotic trajectories would be labelled
 *transitional* and excluded. The criterion is unchanged; only the estimation
 window grows, which shrinks the SEM by ≈ √3. Only dynamical diagnostics of one
 trajectory were seen; no descriptor, baseline or classifier output existed.
+
+**Amendment 2 — chaos criterion λ₁ − 2·SEM > 0 → λ̂₁ > 0.01 (both flows).**
+Even with the 300-unit window, the first three RB trajectories at Ra = 10⁶ gave
+λ̂₁ = 0.056 ± 0.023, 0.057 ± 0.035 and 0.048 ± 0.030: all clearly positive, with
+irregular Nu bursts (CV ≈ 1), yet two of three fail the 2-SEM test. The block
+SEM is not a valid uncertainty for intermittent chaos (block means are
+heavy-tailed: blocks with and without a burst), so the test is replaced by a
+point-estimate threshold placed in the gap observed in the pilots: every
+non-chaotic pilot state (steady, laminar, time-dependent Re = 30) has
+λ̂₁ ≤ −0.010 and every chaotic one λ̂₁ ≥ +0.048. Labels are recomputed from the
+stored trajectory metadata (no re-simulation). The frozen-rule label is kept
+in the feature files (`regime_frozen_rule`) and the number of trajectories
+whose label differs is reported. Again, no descriptor, baseline or
+classifier output existed when this amendment was made.

@@ -61,11 +61,15 @@ KOLMO = dict(FLOWS["kolmogorov"], pilot_Re=FLOWS["kolmogorov"]["pilot"])
 RB = dict(FLOWS["rb"], pilot_Ra=FLOWS["rb"]["pilot"])
 
 
-def label_trajectory(meta, flow):
-    """Descriptor-free regime label of one trajectory (pre-registered).
+LYAP_CHAOS = 0.01   # Amendment 2 (PROTOCOL.md 13): point-estimate threshold for chaos
 
-    turbulent    : chaotic, largest Lyapunov exponent significantly > 0
-                   (lambda - 2 SEM > 0);
+
+def label_trajectory(meta, flow, rule="amended"):
+    """Descriptor-free regime label of one trajectory.
+
+    turbulent    : chaotic, largest Lyapunov exponent lambda_1 > 0.01
+                   (point estimate; Amendment 2). rule="frozen" applies the
+                   original lambda_1 - 2 SEM > 0 (reported as a sensitivity);
     laminar      : Kolmogorov - converged to the laminar fixed point
                    (relative distance < 1e-3);
                    RB - steady convection (CV of Nu over the sampling
@@ -73,7 +77,9 @@ def label_trajectory(meta, flow):
     transitional : everything else (non-laminar coherent states: steady,
                    travelling, periodic or quasi-periodic).
     """
-    if meta["lyap"] - 2 * meta["lyap_sem"] > 0:
+    chaotic = (meta["lyap"] > LYAP_CHAOS if rule == "amended"
+               else meta["lyap"] - 2 * meta["lyap_sem"] > 0)
+    if chaotic:
         return "turbulent"
     if flow == "kolmogorov" and meta["dist_ref"] < 1e-3:
         return "laminar"
