@@ -73,7 +73,7 @@ def views(flow):
         ax = axes[0, j]
         vmax = np.abs(f).max()
         ax.imshow(f, origin="lower", cmap="RdBu_r", vmin=-vmax, vmax=vmax, aspect="auto")
-        ax.set_title(f"{reg}\n{'Re' if flow == 'kolmogorov' else 'Ra'} = {row.param:g}")
+        ax.set_title(f"{reg}\n" + (f"Re = {row.param:g}" if flow == "kolmogorov" else f"Ra = {row.param:.1e}"))
         ax.set_xticks([])
         ax.set_yticks([])
         ax.grid(False)
@@ -92,13 +92,14 @@ def views(flow):
         ax.plot(lim, lim, color=plots.INK2, lw=0.8)
         ax.set_xlabel("birth")
         ax.set_ylabel("death")
-        ax.legend(frameon=False, loc="lower right")
+        ax.legend(frameon=True, facecolor="white", edgecolor=plots.GRID, loc="lower right",
+                  title="finite pairs", title_fontsize=6.5)
         ax.set_title("X2: sublevel persistence")
         A = np.abs(np.nan_to_num(np.corrcoef(patch_matrix(f, c["blocks"]).T)))
         np.fill_diagonal(A, 0)
         ax = axes[2, j]
         ax.imshow((A > c["theta"]).astype(float), cmap="Greys", vmin=0, vmax=1)
-        ax.set_title(f"X1: graph, density {row['X1_density']:.2f}")
+        ax.set_title(f"X1: graph (black = edge), density {row['X1_density']:.2f}", fontsize=8)
         ax.set_xlabel("patch")
         ax.set_ylabel("patch")
         ax.grid(False)

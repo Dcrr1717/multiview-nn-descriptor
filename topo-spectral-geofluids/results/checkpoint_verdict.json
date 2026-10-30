@@ -1,0 +1,39 @@
+{
+ "verdict": "PLAN C (NO-GO)",
+ "reason": "X3 does not clearly beat the spectral-slope + statistics baseline on the primary flow",
+ "per_flow": {
+  "kolmogorov": {
+   "endpoint": "clean-hard",
+   "criteria": {
+    "baseline_auc": 0.9389054232804233,
+    "x3_auc": 0.951058201058201,
+    "ceiling": false,
+    "G1_beats_baseline": false,
+    "G2_fusion_beats_views": false,
+    "G4_beats_amplitude_proxy": false,
+    "incremental_over_B": false,
+    "repl_direction": false
+   },
+   "trail": [
+    "clean-primary: B=0.984 (ceiling)",
+    "clean-hard: B=0.939"
+   ]
+  },
+  "rb": {
+   "endpoint": "clean-primary",
+   "criteria": {
+    "baseline_auc": 0.8927083333333334,
+    "x3_auc": 0.9899305555555555,
+    "ceiling": false,
+    "G1_beats_baseline": false,
+    "G2_fusion_beats_views": false,
+    "G4_beats_amplitude_proxy": false,
+    "incremental_over_B": true,
+    "repl_direction": true
+   },
+   "trail": [
+    "clean-primary: B=0.893"
+   ]
+  }
+ }
+}

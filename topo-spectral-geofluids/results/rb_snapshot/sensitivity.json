@@ -1,0 +1,92 @@
+[
+ {
+  "param": "theta",
+  "value": "0.2",
+  "X3_primary": 0.9988194444444444,
+  "view_primary": 0.9623437499999999
+ },
+ {
+  "param": "theta",
+  "value": "0.3",
+  "X3_primary": 0.9581398809523807,
+  "view_primary": 0.9231715029761904
+ },
+ {
+  "param": "theta",
+  "value": "0.4",
+  "X3_primary": 0.9935850694444444,
+  "view_primary": 0.9359095982142858
+ },
+ {
+  "param": "theta",
+  "value": "0.5",
+  "X3_primary": 0.9950396825396824,
+  "view_primary": 0.8707403273809524
+ },
+ {
+  "param": "theta",
+  "value": "0.6",
+  "X3_primary": 0.8646527777777779,
+  "view_primary": 0.9042571924603173
+ },
+ {
+  "param": "blocks",
+  "value": "4x4",
+  "X3_primary": 0.9533134920634921,
+  "view_primary": 0.6860509672619048
+ },
+ {
+  "param": "blocks",
+  "value": "8x8",
+  "X3_primary": 0.9935850694444444,
+  "view_primary": 0.9359095982142858
+ },
+ {
+  "param": "blocks",
+  "value": "16x16",
+  "X3_primary": 0.9596329365079368,
+  "view_primary": 0.8087289186507937
+ },
+ {
+  "param": "corr",
+  "value": "pearson",
+  "X3_primary": 0.9935850694444444,
+  "view_primary": 0.9359095982142858
+ },
+ {
+  "param": "corr",
+  "value": "spearman",
+  "X3_primary": 0.9925694444444446,
+  "view_primary": 0.7268911210317459
+ },
+ {
+  "param": "min_pers",
+  "value": "0.001",
+  "X3_primary": 0.9994791666666666,
+  "view_primary": 0.8988095238095241
+ },
+ {
+  "param": "min_pers",
+  "value": "0.01",
+  "X3_primary": 0.9935850694444444,
+  "view_primary": 0.9615575396825398
+ },
+ {
+  "param": "min_pers",
+  "value": "0.05",
+  "X3_primary": 0.9542857142857144,
+  "view_primary": 0.7689682539682542
+ },
+ {
+  "param": "x2",
+  "value": "cubical",
+  "X3_primary": 0.9935850694444444,
+  "view_primary": 0.9615575396825398
+ },
+ {
+  "param": "x2",
+  "value": "rips",
+  "X3_primary": 0.9267175099206348,
+  "view_primary": 0.839905753968254
+ }
+]

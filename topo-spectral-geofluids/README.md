@@ -8,8 +8,20 @@ Springer *GEM — International Journal on Geomathematics* topical collection
 *Computational Methods and Techniques Applicable to Geophysical Fluids*
 (submission deadline 15 Dec 2026; checkpoint 1 Nov 2026).
 
+> **Checkpoint verdict (30 Oct 2026): PLAN C (NO-GO).** X3 is a valid regime
+> signature (AUC 0.95–0.99), but on the pre-registered decision endpoint it
+> beats neither the spectral-slope + statistics baseline (ΔAUC +0.012,
+> CI [−0.012, +0.053]) nor its best single view. Evidence, diagnosis and
+> Plan B/C: [`REPORT.md`](REPORT.md).
+
 * **Verdict and evidence:** [`REPORT.md`](REPORT.md)
 * **Pre-registered protocol (frozen before any classification):** [`PROTOCOL.md`](PROTOCOL.md)
+* **Machine-readable verdict:** [`results/checkpoint_verdict.json`](results/checkpoint_verdict.json);
+  all tables: [`results/summary_tables.md`](results/summary_tables.md)
+
+This folder is self-contained and meant to become its own repository
+(`topo-spectral-geofluids`). To extract it with its history:
+`git subtree split --prefix topo-spectral-geofluids -b topo-spectral-geofluids`.
 
 ## What is in here
 
@@ -60,13 +72,17 @@ python scripts/03_classify.py rb
 python scripts/05_verdict.py
 ```
 
-**Full path** (≈ 5 h on 4 CPU cores, no GPU) — regenerate the simulations:
+(The noise, window and label-sensitivity variants use the flags shown below;
+every run writes `results/<flow>_<mode>[_noise<s>][_label_<rule>]/metrics.json`
+plus its figures.)
+
+**Full path** (≈ 6–7 h on 4 CPU cores, no GPU) — regenerate the simulations:
 
 ```bash
 python scripts/00_pilot_regimes.py kolmogorov          # descriptor-free regime scan
 python scripts/00_pilot_regimes.py rb
 python scripts/01_simulate.py kolmogorov               # data/raw/kolmogorov (~0.6 GB)
-python scripts/01_simulate.py rb
+python scripts/01_simulate.py rb                       # data/raw/rb (~0.2 GB)
 for f in kolmogorov rb; do
   python scripts/02_features.py $f                      # primary: snapshot mode
   python scripts/02_features.py $f --mode window        # secondary: space-time window
@@ -77,7 +93,10 @@ for f in kolmogorov rb; do
   python scripts/03_classify.py $f --mode window --perm 0
   for s in 0.25 0.5 1.0; do python scripts/03_classify.py $f --noise $s --perm 0 --no-extras; done
   python scripts/04_sensitivity.py $f
+  python scripts/03_classify.py $f --label regime_steady_first --perm 0 --no-extras   # label sensitivity
+  python scripts/03_classify.py $f --label regime_frozen_rule --perm 0 --no-extras
 done
+python scripts/03_classify.py kolmogorov --noise 0.5 --label regime_frozen_rule --perm 0 --no-extras
 python scripts/05_verdict.py
 python scripts/06_figures.py
 ```
