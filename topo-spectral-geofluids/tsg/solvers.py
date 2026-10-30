@@ -6,8 +6,8 @@ integrating-factor fourth-order Runge-Kutta scheme (IF-RK4): the linear
 diffusion operators are integrated exactly in Fourier space and the
 nonlinear (advection, buoyancy, forcing) terms explicitly. Products are
 de-aliased with the 2/3 rule. Time steps are chosen adaptively from a CFL
-condition but every output interval is hit exactly, so snapshots are
-sampled on a uniform clock.
+condition (re-evaluated every 20 steps) and every output interval is hit
+exactly, so snapshots are sampled on a uniform clock.
 
 1. KolmogorovFlow
    Doubly periodic box [0, 2*pi)^2, body force f = (sin(n y), 0):
@@ -110,13 +110,20 @@ class KolmogorovFlow:
         umax = max(np.abs(u).max(), np.abs(v).max(), 1e-8)
         return min(self.cfl * self.dx / umax, self.dt_max)
 
-    def advance(self, wh, T):
-        """Integrate the spectral vorticity `wh` exactly by time T."""
-        n_sub = max(1, int(np.ceil(T / self.cfl_dt(wh))))
-        dt = T / n_sub
-        E, E2 = self._factors(dt)
-        for _ in range(n_sub):
-            (wh,) = _rk4_if((wh,), self._rhs, E, E2, dt)
+    def advance(self, wh, T, recheck=20):
+        """Integrate the spectral vorticity `wh` exactly by time T. The CFL
+        time step is re-evaluated every `recheck` steps and the last step
+        lands exactly on T."""
+        t = 0.0
+        while T - t > 1e-12:
+            rem = T - t
+            n = max(1, int(np.ceil(rem / self.cfl_dt(wh))))
+            dt = rem / n
+            E, E2 = self._factors(dt)
+            m = min(n, recheck)
+            for _ in range(m):
+                (wh,) = _rk4_if((wh,), self._rhs, E, E2, dt)
+            t = T if m == n else t + m * dt
         return wh
 
     # ── diagnostics ──────────────────────────────────────────────────
@@ -205,14 +212,21 @@ class RayleighBenard:
         h = min(self.dx, self.dz)
         return min(self.cfl * h / max(np.abs(u).max(), np.abs(w).max(), 1e-8), self.dt_max)
 
-    def advance(self, state, T):
+    def advance(self, state, T, recheck=20):
+        """Integrate (w, theta) exactly by time T, CFL re-evaluated every
+        `recheck` steps (see KolmogorovFlow.advance)."""
         wh, th = state
-        n_sub = max(1, int(np.ceil(T / self.cfl_dt(wh))))
-        dt = T / n_sub
-        E, E2 = self._factors(dt)
-        for _ in range(n_sub):
-            wh, th = _rk4_if((wh, th), self._rhs, E, E2, dt)
-            wh, th = self.odd(wh), self.odd(th)
+        t = 0.0
+        while T - t > 1e-12:
+            rem = T - t
+            n = max(1, int(np.ceil(rem / self.cfl_dt(wh))))
+            dt = rem / n
+            E, E2 = self._factors(dt)
+            m = min(n, recheck)
+            for _ in range(m):
+                wh, th = _rk4_if((wh, th), self._rhs, E, E2, dt)
+                wh, th = self.odd(wh), self.odd(th)
+            t = T if m == n else t + m * dt
         return wh, th
 
     def physical(self, fh):
