@@ -445,3 +445,58 @@ of analysis.
 Package versions: numpy 2.5.3, scipy 1.18.1, scikit-learn 1.9.1, statsmodels
 0.15.0, networkx 3.7, gudhi 3.13.0, ripser 0.6.15, pandas 3.0.5,
 matplotlib 3.11.2 (Python 3.13).
+
+## 7. Addendum (30 Oct, later): feasibility of the Plan C pivots
+
+*Exploratory.* These checks reuse the data already analysed above, so they
+are not evidence for anything. They only decide whether a pre-registered
+follow-up on fresh seeds is worth the compute. Quick settings: 10 CV
+repeats, 300 bootstrap resamples.
+
+**C1, sparse stations (`tsg/stations.py`, `scripts/07_stations.py`).** First,
+a design limitation I had not flagged in §4: at the snapshot level, X1 has no
+faithful station analogue, because a functional graph needs several samples
+per node. With station *time series* it does (a climate network), but then
+the steady laminar/transitional states make any temporal statistic decisive,
+which is the shortcut that pushed the main study to snapshots. So only the PH
+view can be tested. It uses the lower-star filtration on the Delaunay complex
+of M random stations, against a semivariogram + moments baseline (BS).
+
+| OOF AUC | X2s (station PH) | BS (variogram + moments) | BSamp | X2s − BS [95 % CI] |
+|---|---|---|---|---|
+| Kolmogorov, M = 64, 3-class | 0.819 | **0.963** | 0.922 | −0.145 [−0.216, −0.090] |
+| Kolmogorov, M = 128, 3-class | 0.729 | **0.934** | 0.889 | −0.205 [−0.296, −0.095] |
+| Kolmogorov, M = 256, 3-class | 0.903 | 0.916 | 0.916 | −0.013 [−0.133, +0.103] |
+| Kolmogorov, M = 128, transitional vs turbulent | 0.445 | **0.902** | 0.817 | −0.458 [−0.616, −0.291] |
+| RB, M = 64 | 0.849 | 0.899 | 0.918 | −0.049 [−0.108, −0.000] |
+| RB, M = 128 | 0.900 | 0.879 | 0.926 | +0.021 [−0.010, +0.055] |
+| RB, M = 256 | **0.985** | 0.920 | 0.939 | +0.065 [+0.013, +0.152] |
+
+On the primary flow, station PH is clearly *worse* than the variogram
+baseline: at chance on the transitional-vs-turbulent endpoint for M ≤ 128.
+Only RB at M = 256 favours PH, and RB has already shown how fragile its
+labels are (§2.6).
+
+**C2, cross-flow transfer (`scripts/08_transfer.py`, `results/transfer.json`).**
+Train on one flow, test on the other, chaotic vs non-chaotic.
+
+| AUC | X1 | X2 | X3 | B | B_amp |
+|---|---|---|---|---|---|
+| Kolmogorov → RB | 0.529 | 0.106 | 0.392 | 0.289 | 0.088 |
+| RB → Kolmogorov | 0.968 | 0.798 | 0.660 | **0.986** | 0.007 |
+
+Nothing transfers from Kolmogorov to RB, and from RB to Kolmogorov the
+spectral baseline transfers best.
+
+**Updated recommendation.** Neither pivot gives the descriptor a credible
+advantage, so I no longer recommend spending the November slot on C1.
+
+* The realistic GEM deliverable is **C3**: a methods / negative-result note.
+  Its content: the pre-registered pipeline, the amplitude confound, the
+  pseudo-replication pitfall, the noise fragility of `sig6`, view redundancy,
+  the "trivial away from the transition, impossible at it" structure, and
+  these negative pivots.
+* The alternative is to not submit to this collection and keep the
+  infrastructure for a different question. One example is extreme-event
+  precursors in Kolmogorov flow (Farazmand & Sapsis 2017), where the solver
+  and protocol here can be reused directly.

@@ -12,7 +12,10 @@ Springer *GEM — International Journal on Geomathematics* topical collection
 > signature (AUC 0.95–0.99), but on the pre-registered decision endpoint it
 > beats neither the spectral-slope + statistics baseline (ΔAUC +0.012,
 > CI [−0.012, +0.053]) nor its best single view. Evidence, diagnosis and
-> Plan B/C: [`REPORT.md`](REPORT.md).
+> Plan B/C: [`REPORT.md`](REPORT.md). An exploratory follow-up (§7) found no
+> advantage for the descriptor with sparse station data or cross-flow
+> transfer either. The recommended deliverable is now a methods /
+> negative-result note.
 
 * **Verdict and evidence:** [`REPORT.md`](REPORT.md)
 * **Pre-registered protocol (frozen before any classification):** [`PROTOCOL.md`](PROTOCOL.md)
@@ -45,6 +48,8 @@ commits keep their messages and order but get new hashes.
 | `scripts/04_sensitivity.py` | sensitivity sweep (θ, patches, correlation, persistence floor, Rips X2) |
 | `scripts/05_verdict.py` | applies the decision rule → `results/checkpoint_verdict.json` |
 | `scripts/06_figures.py` | regime-scan and "two views" figures |
+| `tsg/stations.py`, `scripts/07_stations.py` | Plan C1 feasibility (exploratory): station networks, lower-star PH on the Delaunay complex, semivariogram baseline |
+| `scripts/08_transfer.py` | Plan C2 feasibility (exploratory): cross-flow transfer |
 | `tests/` | solver validation (Taylor–Green decay, laminar fixed point, energy budget, RB linear growth rate and sub-critical decay) and descriptor invariances |
 
 ## Mapping from the network descriptor
@@ -103,6 +108,9 @@ done
 python scripts/03_classify.py kolmogorov --noise 0.5 --label regime_frozen_rule --perm 0 --no-extras
 python scripts/05_verdict.py
 python scripts/06_figures.py
+# exploratory follow-up (REPORT.md section 7)
+for f in kolmogorov rb; do for M in 64 128 256; do python scripts/07_stations.py $f --M $M --quick; done; done
+python scripts/08_transfer.py
 ```
 
 All randomness is seeded from `SEED = 2024` (as in the network study).

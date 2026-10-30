@@ -132,3 +132,22 @@ def test_patch_coherence_orders_laminar_above_noise():
     d_lam = x1_patch_coherence(normalize_window(lam))[0]
     d_noise = x1_patch_coherence(normalize_window(noise))[0]
     assert d_lam > 0.5 and d_noise < 0.05
+
+
+def test_station_network_torus_euler_characteristic():
+    """Periodic tiling + Delaunay gives a triangulated torus: V - E + F = 0."""
+    from tsg.stations import station_network
+    (_, _), pos, tri = station_network((64, 64), 80, (True, True), 3, (2 * np.pi, 2 * np.pi))
+    edges = {tuple(sorted(e)) for t in tri for e in ((t[0], t[1]), (t[0], t[2]), (t[1], t[2]))}
+    assert 80 - len(edges) + len(tri) == 0
+
+
+def test_lower_star_counts_wells_and_smooth_variogram_slope():
+    from tsg.stations import lower_star_persistence, make_baseline, station_network
+    (iy, ix), pos, tri = station_network((128, 128), 256, (True, True), 1, (2 * np.pi, 2 * np.pi))
+    y, x = pos[:, 0], pos[:, 1]
+    f = np.cos(x) * np.cos(y)                     # 2 minima on the torus -> 1 finite H0 pair
+    h0, _ = lower_star_persistence(f, tri, 0.05)
+    assert len(h0) == 1
+    slope = make_baseline(pos, (2 * np.pi, 2 * np.pi), (True, True))(f)[0]
+    assert 1.4 < slope < 2.3                      # smooth field: semivariogram ~ h^2 at short lags
